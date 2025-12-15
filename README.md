@@ -11,6 +11,7 @@
 
 **Optional / later:**
   - TanStack (Query / Router) – not included from start
+  - Firebase
 
 **Templates & structure:**
   - GitHub Issue Templates included in the template repo
