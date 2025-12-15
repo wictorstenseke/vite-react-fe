@@ -39,7 +39,8 @@
   - Add a folder with copy-paste friendly install/setup instructions
     (to quickly feed into an AI assistant)
 
-**Add these in editor:**
+**Add these in project root:**
+```
 // .vscode/settings.json
 {
   "editor.formatOnSave": true,
@@ -57,6 +58,8 @@
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true
 }
+```
+```
 // .vscode/extensions.json
 {
   "recommendations": [
@@ -65,6 +68,7 @@
     "bradlc.vscode-tailwindcss"
   ]
 }
+```
 
 **Additional thoughts (optional, but useful)**
 - `.editorconfig` – reduces editor-specific formatting differences
