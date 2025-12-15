@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-# Cursor Rules – Authority & Discovery (Modular Rules)
+### Cursor Rules – Authority & Discovery (Modular Rules)
 
 You must always:
 1) Discover rules first
@@ -29,4 +29,5 @@ You must always:
 
 Output requirement:
 - At the top of your first response, briefly list which rule files you read (file paths only)
+
 ---
