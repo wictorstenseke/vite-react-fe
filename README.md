@@ -21,3 +21,9 @@
 - Fast, repeatable project spin-up
 - Minimal decisions at project start
 - Easy handoff to AI tools and assistants
+
+- Repository type: GitHub Template Repository
+**- Editor stuff:**
+  - Include `.cursorrules`
+  - Add a folder with copy-paste friendly install/setup instructions
+    (to quickly feed into an AI assistant)
