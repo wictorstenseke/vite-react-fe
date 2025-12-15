@@ -78,3 +78,8 @@
 - `README.md` – short “copy/paste” quick start (keep it under ~10 lines)
 - Pull Request template: `.github/pull_request_template.md` – lightweight checklist
 - Dependabot: `.github/dependabot.yml` – optional, but nice for dependency hygiene
+
+**Additional Docs**:
+- https://github.com/vitejs/awesome-vite#plugins
+- https://ui.shadcn.com/docs/installation/vite
+- https://vitest.dev/guide/
