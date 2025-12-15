@@ -10,8 +10,8 @@ A modern, production-ready React boilerplate with best practices built in.
 - 🧩 **shadcn/ui** - Beautiful, accessible components
 - 🛣️ **TanStack Router** - Type-safe routing
 - ✅ **Vitest** - Fast unit testing with coverage
-- 🔍 **ESLint** - Code linting
-- 💅 **Prettier** - Code formatting
+- 🔍 **ESLint** - Code linting with import ordering and unused imports detection
+- 💅 **Prettier** - Code formatting (integrated with ESLint)
 - 🤖 **GitHub Actions** - CI/CD pipeline
 - 📱 **Responsive** - Mobile-first design
 
@@ -57,7 +57,7 @@ npm run dev
 npm run build
 ```
 
-This runs type checking, linting, tests, and builds the app.
+Build process runs type checking, linting, tests, and builds the app. Any failure stops the build.
 
 ## 📝 Available Scripts
 
@@ -156,6 +156,15 @@ GitHub Actions workflow is included (`.github/workflows/ci.yml`):
 - Linting
 - Testing
 - Building
+
+## 📚 Learn More
+
+- [Vite Documentation](https://vite.dev)
+- [React Documentation](https://react.dev)
+- [TanStack Router](https://tanstack.com/router)
+- [shadcn/ui](https://ui.shadcn.com)
+- [Tailwind CSS](https://tailwindcss.com)
+- [Vitest](https://vitest.dev)
 
 ## 📄 License
 
