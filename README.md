@@ -83,3 +83,10 @@
 - https://github.com/vitejs/awesome-vite#plugins
 - https://ui.shadcn.com/docs/installation/vite
 - https://vitest.dev/guide/
+
+**Minimal starter layout (Landing + Example)**
+- Include a very light “AppShell” layout used by both pages
+  - Good base padding + max-width container
+  - Simple header area (e.g., title left, optional avatar/right slot)
+  - Main content area with consistent spacing
+  - Responsive defaults (mobile-first)
