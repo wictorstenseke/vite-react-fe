@@ -1,6 +1,6 @@
 # vite-react-fe
 
-**- Core stack:**
+**Core stack:**
   - Vite
   - React
   - TypeScript
@@ -9,10 +9,10 @@
   - Vitest
   - GitHub Actions (CI flow)
 
-**- Optional / later:**
+**Optional / later:**
   - TanStack (Query / Router) – not included from start
 
-**- Templates & structure:**
+**Templates & structure:**
   - GitHub Issue Templates included in the template repo
   - Feature templates as Markdown files (e.g. `docs/templates/feature.md`)
   - Issue templates may reference or link to feature templates
@@ -22,7 +22,7 @@
 - Minimal decisions at project start
 - Easy handoff to AI tools and assistants
 
-**- Editor stuff:**
+**Editor stuff:**
   - Include `.cursorrules`
   - Add a folder with copy-paste friendly install/setup instructions
     (to quickly feed into an AI assistant)
