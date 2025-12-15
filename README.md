@@ -1,92 +1,73 @@
-# vite-react-fe
+# React + TypeScript + Vite
 
-**Core stack:**
-  - Vite
-  - React
-  - TypeScript
-  - Tailwind CSS
-  - shadcn/ui
-  - Vitest
-  - GitHub Actions (CI flow)
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-**Plugins Base:**
-- ESLint (core)
-- TypeScript ESLint (`typescript-eslint`) – enables real TypeScript-aware linting rules
-- React Hooks rules (`eslint-plugin-react-hooks`) – catches common hooks mistakes
-- React Refresh (`eslint-plugin-react-refresh`) – fits Vite / Fast Refresh workflows
+Currently, two official plugins are available:
 
-**Plugins extras**
-- Import rules (`eslint-plugin-import`) – ordering, duplicates, and broken imports
-- Unused imports (`eslint-plugin-unused-imports`) – removes dead code early
-- Prettier with ESLint (`eslint-config-prettier`) – prevents formatting vs lint rule conflicts
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-**Optional / later:**
-  - TanStack (Query / Router) – not included from start
-  - Firebase
+## React Compiler
 
-**Templates & structure:**
-  - GitHub Issue Templates included in the template repo
-  - Feature templates as Markdown files (e.g. `docs/templates/feature.md`)
-  - Issue templates may reference or link to feature templates
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-**Goal:**
-- Fast, repeatable project spin-up
-- Minimal decisions at project start
-- Easy handoff to AI tools and assistants
+## Expanding the ESLint configuration
 
-**Editor stuff:**
-  - Include `.cursorrules`
-  - Add a folder with copy-paste friendly install/setup instructions
-    (to quickly feed into an AI assistant)
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-**Add these in project root:**
-```
-// .vscode/settings.json
-{
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "source.organizeImports": false
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
   },
-
-  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
-  "eslint.format.enable": false,
-
-  "files.eol": "\n",
-  "files.insertFinalNewline": true,
-  "files.trimTrailingWhitespace": true
-}
-```
-```
-// .vscode/extensions.json
-{
-  "recommendations": [
-    "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
-    "bradlc.vscode-tailwindcss"
-  ]
-}
+])
 ```
 
-**Additional thoughts (optional, but useful)**
-- `.editorconfig` – reduces editor-specific formatting differences
-- `.env.example` – documents required environment variables  
-  (add `.env*` to `.gitignore`)
-- `src/lib/cn.ts` – shared className merge utility (shadcn pattern)
-- `README.md` – short “copy/paste” quick start (keep it under ~10 lines)
-- Pull Request template: `.github/pull_request_template.md` – lightweight checklist
-- Dependabot: `.github/dependabot.yml` – optional, but nice for dependency hygiene
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-**Additional Docs**:
-- https://github.com/vitejs/awesome-vite#plugins
-- https://ui.shadcn.com/docs/installation/vite
-- https://vitest.dev/guide/
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-**Minimal starter layout (Landing + Example)**
-- Include a very light “AppShell” layout used by both pages
-  - Good base padding + max-width container
-  - Simple header area (e.g., title left, optional avatar/right slot)
-  - Main content area with consistent spacing
-  - Responsive defaults (mobile-first)
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
