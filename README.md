@@ -39,7 +39,7 @@
   - Add a folder with copy-paste friendly install/setup instructions
     (to quickly feed into an AI assistant)
 
-**Add these:**
+**Add these in editor:**
 // .vscode/settings.json
 {
   "editor.formatOnSave": true,
@@ -66,3 +66,11 @@
   ]
 }
 
+**Additional thoughts (optional, but useful)**
+- `.editorconfig` – reduces editor-specific formatting differences
+- `.env.example` – documents required environment variables  
+  (add `.env*` to `.gitignore`)
+- `src/lib/cn.ts` – shared className merge utility (shadcn pattern)
+- `README.md` – short “copy/paste” quick start (keep it under ~10 lines)
+- Pull Request template: `.github/pull_request_template.md` – lightweight checklist
+- Dependabot: `.github/dependabot.yml` – optional, but nice for dependency hygiene
