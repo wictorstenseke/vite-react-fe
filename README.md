@@ -4,17 +4,21 @@ A modern, production-ready React boilerplate with best practices built in.
 
 ## 🚀 Features
 
-- ⚡️ **Vite** - Lightning fast build tool
+- ⚡️ **Vite (Rolldown)** - Lightning fast build tool powered by Rust-based Rolldown bundler
 - ⚛️ **React 19** - Latest React with TypeScript
 - 🎨 **Tailwind CSS v4** - Utility-first CSS framework
-- 🧩 **shadcn/ui** - Beautiful, accessible components
-- 🛣️ **TanStack Router** - Type-safe routing
+- 🧩 **shadcn/ui** - Beautiful, accessible components built on Base UI primitives
+- 🛣️ **TanStack Router** - Type-safe file-based routing with auto-generated route tree
 - 🔄 **TanStack Query** - Powerful data fetching and caching
 - ✅ **Vitest** - Fast unit testing with coverage
 - 🔍 **ESLint** - Code linting with import ordering and unused imports detection
 - 💅 **Prettier** - Code formatting (integrated with ESLint)
 - 🤖 **GitHub Actions** - CI/CD pipeline
 - 📱 **Responsive** - Mobile-first design
+
+### About Rolldown-Vite
+
+This boilerplate uses [rolldown-vite](https://vite.dev/guide/migration#rolldown-migration) (aliased as `vite`), Vite's experimental Rust-based bundler that's 5-10x faster than the JavaScript bundler. It's a drop-in replacement providing identical API and significantly improved build performance.
 
 ## 📦 Project Structure
 
@@ -70,16 +74,30 @@ Build process runs type checking, linting, tests, and builds the app. Any failur
 
 ## 📝 Available Scripts
 
-- `npm run dev` - Start dev server
-- `npm run build` - Build for production (with all checks)
-- `npm run preview` - Preview production build
-- `npm run type-check` - Run TypeScript type checking
+### Development
+- `npm run dev` - Start dev server with hot reload
+
+### Building
+- `npm run build` - Full production build (runs type-check, lint, test, then builds)
+- `npm run preview` - Preview production build locally
+
+### Type Checking & Linting
+- `npm run generate:routes` - Generate TanStack Router route tree (auto-run by type-check)
+- `npm run type-check` - Run TypeScript type checking (generates routes first)
 - `npm run lint` - Check code with ESLint
 - `npm run lint:fix` - Fix ESLint issues automatically
+- `npm run format` - Format all files with Prettier
+- `npm run format:check` - Check if files are formatted correctly
+
+### Testing
 - `npm run test` - Run tests once
 - `npm run test:watch` - Run tests in watch mode
 - `npm run test:coverage` - Run tests with coverage report
-- `npm run ci` - Run all checks (for CI/CD)
+
+### Quality Checks
+- `npm run ci` - Run all quality checks (type-check, lint, test) - used in CI pipeline
+- `npm run check` - Alias for `ci`
+- `npm run check:full` - Run all checks including build (most comprehensive)
 
 ## 🎨 Adding Components
 
@@ -94,6 +112,8 @@ npx shadcn@latest add dialog
 Components will be installed in `src/components/ui/`.
 
 ## 🛣️ Adding Routes
+
+TanStack Router uses file-based routing with automatic route tree generation.
 
 1. Create a new file in `src/routes/`:
 
@@ -110,7 +130,12 @@ function AboutPage() {
 }
 ```
 
-2. The route is automatically registered by the TanStack Router plugin.
+2. The route tree is auto-generated:
+   - TanStack Router Vite plugin watches `src/routes/` for changes
+   - Generates `src/routeTree.gen.ts` automatically (git-ignored)
+   - No manual registration needed - just create route files and they work!
+
+**Note:** You don't need to manually run `generate:routes` - it happens automatically during development and before type-checking.
 
 ## 🔄 Data Fetching with TanStack Query
 
