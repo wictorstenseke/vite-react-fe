@@ -9,6 +9,7 @@ A modern, production-ready React boilerplate with best practices built in.
 - 🎨 **Tailwind CSS v4** - Utility-first CSS framework
 - 🧩 **shadcn/ui** - Beautiful, accessible components
 - 🛣️ **TanStack Router** - Type-safe routing
+- 🔄 **TanStack Query** - Powerful data fetching and caching
 - ✅ **Vitest** - Fast unit testing with coverage
 - 🔍 **ESLint** - Code linting with import ordering and unused imports detection
 - 💅 **Prettier** - Code formatting (integrated with ESLint)
@@ -25,13 +26,21 @@ src/
 │   └── ui/                    # shadcn/ui components
 ├── pages/
 │   ├── Landing.tsx            # Home page
-│   └── Example.tsx            # Example page
+│   ├── Example.tsx            # Example page
+│   └── QueryDemo.tsx          # TanStack Query demo
 ├── routes/                    # TanStack Router routes
 │   ├── __root.tsx             # Root layout
 │   ├── index.tsx              # / route
-│   └── example.tsx            # /example route
+│   ├── example.tsx            # /example route
+│   └── query-demo.tsx         # /query-demo route
+├── hooks/
+│   └── usePosts.ts            # Example query hooks
 ├── lib/
+│   ├── api.ts                 # API client with fetch wrapper
+│   ├── queryClient.ts         # TanStack Query configuration
 │   └── utils.ts               # Utility functions
+├── types/
+│   └── api.ts                 # API type definitions
 ├── router.tsx                 # Router configuration
 ├── main.tsx                   # App entry point
 └── index.css                  # Global styles
@@ -103,6 +112,82 @@ function AboutPage() {
 
 2. The route is automatically registered by the TanStack Router plugin.
 
+## 🔄 Data Fetching with TanStack Query
+
+TanStack Query is configured with sensible defaults for automatic caching, background refetching, and optimistic updates.
+
+### Query Configuration
+
+The global QueryClient is configured in `src/lib/queryClient.ts`:
+
+- **staleTime**: 5 minutes - data is fresh for this duration
+- **gcTime**: 30 minutes - unused data stays in cache
+- **retry**: 1 - queries retry once on failure
+- **refetchOnWindowFocus**: true - refetch when window regains focus
+- **refetchOnReconnect**: true - refetch when network reconnects
+
+### Creating Query Hooks
+
+Create custom hooks in `src/hooks/`:
+
+```tsx
+// src/hooks/usePosts.ts
+import { useQuery } from "@tanstack/react-query";
+import { postsApi } from "@/lib/api";
+
+export const usePostsQuery = (params?: PaginationParams) => {
+  return useQuery({
+    queryKey: ["posts", params],
+    queryFn: () => postsApi.getPosts(params),
+  });
+};
+```
+
+### Using Queries in Components
+
+```tsx
+import { usePostsQuery } from "@/hooks/usePosts";
+
+const MyComponent = () => {
+  const { data, isLoading, isError, error } = usePostsQuery();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
+
+  return <div>{/* Render data */}</div>;
+};
+```
+
+### Mutations with Optimistic Updates
+
+```tsx
+import { useUpdatePostMutation } from "@/hooks/usePosts";
+
+const MyComponent = () => {
+  const updatePost = useUpdatePostMutation();
+
+  const handleUpdate = () => {
+    updatePost.mutate({
+      id: 1,
+      data: { title: "Updated Title" },
+    });
+  };
+
+  return <button onClick={handleUpdate}>Update</button>;
+};
+```
+
+### DevTools
+
+React Query Devtools are included in development mode. Click the floating icon to:
+
+- Inspect query cache
+- View query states
+- Manually trigger refetches
+- Debug query configurations
+
+Visit `/query-demo` to see a complete working example with queries, mutations, and cache management.
+
 ## 🎯 Layout System
 
 The `AppShell` component provides:
@@ -162,6 +247,7 @@ GitHub Actions workflow is included (`.github/workflows/ci.yml`):
 - [Vite Documentation](https://vite.dev)
 - [React Documentation](https://react.dev)
 - [TanStack Router](https://tanstack.com/router)
+- [TanStack Query](https://tanstack.com/query)
 - [shadcn/ui](https://ui.shadcn.com)
 - [Tailwind CSS](https://tailwindcss.com)
 - [Vitest](https://vitest.dev)
