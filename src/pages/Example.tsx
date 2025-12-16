@@ -21,32 +21,73 @@ export function Example() {
       {/* Content Sections */}
       <div className="grid gap-6 md:grid-cols-2">
         {/* Counter Card */}
-        <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
-          <h2 className="mb-4 text-xl font-semibold">Interactive Counter</h2>
+        <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm flex flex-col justify-center">
+          <h2 className="mb-4 text-xl font-semibold text-center">
+            Interactive Counter
+          </h2>
           <div className="flex flex-col items-center space-y-4">
             <p className="text-4xl font-bold">{count}</p>
-            <div className="flex gap-2">
-              <Button onClick={() => setCount((c) => c - 1)} variant="outline">
-                Decrement
+            <div className="flex flex-wrap gap-2 justify-center">
+              <Button
+                className="min-w-10"
+                onClick={() => setCount((c) => c - 1)}
+                variant="outline"
+              >
+                –
               </Button>
               <Button onClick={() => setCount(0)} variant="secondary">
                 Reset
               </Button>
-              <Button onClick={() => setCount((c) => c + 1)}>Increment</Button>
+              <Button
+                className="min-w-10"
+                onClick={() => setCount((c) => c + 1)}
+              >
+                +
+              </Button>
             </div>
           </div>
         </div>
 
-        {/* Info Card */}
+        {/* Button Variants Card */}
         <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
-          <h2 className="mb-4 text-xl font-semibold">Button Variants</h2>
-          <div className="flex flex-col space-y-2">
-            <Button>Default Button</Button>
-            <Button variant="secondary">Secondary</Button>
-            <Button variant="outline">Outline</Button>
-            <Button variant="ghost">Ghost</Button>
-            <Button variant="destructive">Destructive</Button>
-            <Button variant="link">Link</Button>
+          <div className="flex flex-col gap-6 sm:flex-row sm:gap-8">
+            <div className="flex-1 min-w-0">
+              <h3 className="mb-2 text-sm font-medium text-muted-foreground">
+                Default Buttons
+              </h3>
+              <div className="flex flex-col space-y-2">
+                <Button>Default Button</Button>
+                <Button variant="secondary">Secondary</Button>
+                <Button variant="outline">Outline</Button>
+                <Button variant="ghost">Ghost</Button>
+                <Button variant="destructive">Destructive</Button>
+                <Button variant="link">Link</Button>
+              </div>
+            </div>
+
+            <div className="flex-1 min-w-0">
+              <h3 className="mb-2 text-sm font-medium text-muted-foreground">
+                Small Variants
+              </h3>
+              <div className="flex flex-col space-y-2">
+                <Button size="sm">Default Button</Button>
+                <Button size="sm" variant="secondary">
+                  Secondary
+                </Button>
+                <Button size="sm" variant="outline">
+                  Outline
+                </Button>
+                <Button size="sm" variant="ghost">
+                  Ghost
+                </Button>
+                <Button size="sm" variant="destructive">
+                  Destructive
+                </Button>
+                <Button size="sm" variant="link">
+                  Link
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -71,4 +112,3 @@ export function Example() {
     </div>
   );
 }
-
