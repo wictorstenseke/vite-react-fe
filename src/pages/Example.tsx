@@ -1,11 +1,73 @@
-import { useState } from "react";
+import { useEffect } from "react";
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 
 import { Button } from "@/components/ui/button";
 
+const COUNTER_STORAGE_KEY = "example-page-shared-counter";
+const COUNTER_QUERY_KEY = ["shared-counter"] as const;
+const BROADCAST_CHANNEL_NAME = "shared-counter-channel";
+
+const getCounterFromStorage = (): number => {
+  const stored = localStorage.getItem(COUNTER_STORAGE_KEY);
+  if (stored === null) return 0;
+  const parsed = Number.parseInt(stored, 10);
+  return Number.isNaN(parsed) ? 0 : parsed;
+};
+
+const setCounterToStorage = async (value: number): Promise<number> => {
+  localStorage.setItem(COUNTER_STORAGE_KEY, String(value));
+  return value;
+};
+
 export function Example() {
-  const [count, setCount] = useState(0);
+  const queryClient = useQueryClient();
+
+  const { data: count = 0 } = useQuery({
+    queryKey: COUNTER_QUERY_KEY,
+    queryFn: getCounterFromStorage,
+    staleTime: Infinity,
+  });
+
+  const counterMutation = useMutation({
+    mutationFn: setCounterToStorage,
+    onSuccess: (newValue) => {
+      queryClient.setQueryData(COUNTER_QUERY_KEY, newValue);
+      const channel = new BroadcastChannel(BROADCAST_CHANNEL_NAME);
+      channel.postMessage({ type: "counter-update", value: newValue });
+      channel.close();
+    },
+  });
+
+  useEffect(() => {
+    const channel = new BroadcastChannel(BROADCAST_CHANNEL_NAME);
+
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data?.type === "counter-update") {
+        queryClient.setQueryData(COUNTER_QUERY_KEY, event.data.value);
+      }
+    };
+
+    channel.addEventListener("message", handleMessage);
+
+    return () => {
+      channel.removeEventListener("message", handleMessage);
+      channel.close();
+    };
+  }, [queryClient]);
+
+  const handleIncrement = () => {
+    counterMutation.mutate(count + 1);
+  };
+
+  const handleDecrement = () => {
+    counterMutation.mutate(count - 1);
+  };
+
+  const handleReset = () => {
+    counterMutation.mutate(0);
+  };
 
   return (
     <div className="flex flex-col space-y-8 py-8">
@@ -30,18 +92,15 @@ export function Example() {
             <div className="flex flex-wrap gap-2 justify-center">
               <Button
                 className="min-w-10"
-                onClick={() => setCount((c) => c - 1)}
+                onClick={handleDecrement}
                 variant="outline"
               >
                 –
               </Button>
-              <Button onClick={() => setCount(0)} variant="secondary">
+              <Button onClick={handleReset} variant="secondary">
                 Reset
               </Button>
-              <Button
-                className="min-w-10"
-                onClick={() => setCount((c) => c + 1)}
-              >
+              <Button className="min-w-10" onClick={handleIncrement}>
                 +
               </Button>
             </div>
@@ -105,7 +164,7 @@ export function Example() {
 
       {/* Navigation */}
       <div className="flex justify-center pt-4">
-        <Button variant="outline" render={<Link to="/" />}>
+        <Button variant="outline" render={<Link to="/" />} nativeButton={false}>
           ← Back to Home
         </Button>
       </div>
