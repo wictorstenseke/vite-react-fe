@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && npm run lint && npm run test && vite build",
     "preview": "vite preview",
-    "generate:routes": "node scripts/generate-routes.js || true",
-    "type-check": "npm run generate:routes && tsc -b --noEmit",
+    "generate:routes": "tsr generate",
+    "type-check": "tsr generate && tsc -b --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest run",
@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@tanstack/router-cli": "^1.141.2",
     "@tanstack/router-vite-plugin": "^1.141.2",
     "@types/node": "^24.10.4",
     "@types/react": "^19.2.5",
