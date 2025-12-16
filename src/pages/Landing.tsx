@@ -12,12 +12,19 @@ export function Landing() {
         </h1>
         <p className="max-w-2xl text-lg text-muted-foreground sm:text-xl">
           A modern React boilerplate with Vite, TypeScript, Tailwind CSS,
-          shadcn/ui, and TanStack Router. Built with best practices and ready to
-          scale.
+          shadcn/ui, TanStack Router, and TanStack Query. Built with best
+          practices and ready to scale.
         </p>
         <div className="flex flex-col gap-4 sm:flex-row">
           <Button size="lg" render={<Link to="/example" />}>
             Get Started
+          </Button>
+          <Button
+            size="lg"
+            variant="secondary"
+            render={<Link to="/query-demo" />}
+          >
+            Query Demo
           </Button>
           <Button
             size="lg"
@@ -60,10 +67,10 @@ export function Landing() {
             </p>
           </div>
           <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
-            <h3 className="mb-2 font-semibold">Type-Safe Routing</h3>
+            <h3 className="mb-2 font-semibold">TanStack Ecosystem</h3>
             <p className="text-sm text-muted-foreground">
-              TanStack Router for fully type-safe navigation and route
-              management.
+              TanStack Router for type-safe routing and TanStack Query for
+              powerful data fetching with automatic caching.
             </p>
           </div>
           <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
