@@ -16,17 +16,21 @@ export function Landing() {
           scale.
         </p>
         <div className="flex flex-col gap-4 sm:flex-row">
-          <Button size="lg" asChild>
-            <Link to="/example">Get Started</Link>
+          <Button size="lg" render={<Link to="/example" />}>
+            Get Started
           </Button>
-          <Button size="lg" variant="outline" asChild>
-            <a
-              href="https://github.com/wictorstenseke/vite-react-fe"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View on GitHub
-            </a>
+          <Button
+            size="lg"
+            variant="outline"
+            render={
+              <a
+                href="https://github.com/wictorstenseke/vite-react-fe"
+                target="_blank"
+                rel="noopener noreferrer"
+              />
+            }
+          >
+            View on GitHub
           </Button>
         </div>
       </div>
