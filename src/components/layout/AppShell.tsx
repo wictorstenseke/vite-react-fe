@@ -33,6 +33,14 @@ export function AppShell({ children }: AppShellProps) {
               >
                 Example
               </Link>
+              <Link
+                to="/query-demo"
+                className="transition-colors hover:text-foreground/80"
+                activeProps={{ className: "text-foreground" }}
+                inactiveProps={{ className: "text-foreground/60" }}
+              >
+                Query Demo
+              </Link>
             </nav>
           </div>
         </div>
