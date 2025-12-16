@@ -75,13 +75,16 @@ Build process runs type checking, linting, tests, and builds the app. Any failur
 ## 📝 Available Scripts
 
 ### Development
+
 - `npm run dev` - Start dev server with hot reload
 
 ### Building
+
 - `npm run build` - Full production build (runs type-check, lint, test, then builds)
 - `npm run preview` - Preview production build locally
 
 ### Type Checking & Linting
+
 - `npm run generate:routes` - Generate TanStack Router route tree (auto-run by type-check)
 - `npm run type-check` - Run TypeScript type checking (generates routes first)
 - `npm run lint` - Check code with ESLint
@@ -90,11 +93,13 @@ Build process runs type checking, linting, tests, and builds the app. Any failur
 - `npm run format:check` - Check if files are formatted correctly
 
 ### Testing
+
 - `npm run test` - Run tests once
 - `npm run test:watch` - Run tests in watch mode
 - `npm run test:coverage` - Run tests with coverage report
 
 ### Quality Checks
+
 - `npm run ci` - Run all quality checks (type-check, lint, test) - used in CI pipeline
 - `npm run check` - Alias for `ci`
 - `npm run check:full` - Run all checks including build (most comprehensive)
