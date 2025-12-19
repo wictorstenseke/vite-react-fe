@@ -1,12 +1,14 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 
 import { AppShell } from "@/components/layout/AppShell";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const Route = createRootRoute({
   component: () => (
-    <AppShell>
-      <Outlet />
-    </AppShell>
+    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+      <AppShell>
+        <Outlet />
+      </AppShell>
+    </ThemeProvider>
   ),
 });
-

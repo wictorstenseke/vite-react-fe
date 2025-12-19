@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 
 import { Link } from "@tanstack/react-router";
 
+import { ModeToggle } from "@/components/mode-toggle";
+
 interface AppShellProps {
   children: ReactNode;
 }
@@ -11,7 +13,7 @@ export function AppShell({ children }: AppShellProps) {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-        <div className="container mx-auto flex h-14 max-w-screen-2xl items-center px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto flex h-14 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="mr-4 flex">
             <Link to="/" className="mr-6 flex items-center space-x-2">
               <span className="font-bold">My App</span>
@@ -43,6 +45,7 @@ export function AppShell({ children }: AppShellProps) {
               </Link>
             </nav>
           </div>
+          <ModeToggle />
         </div>
       </header>
 
