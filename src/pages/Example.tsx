@@ -164,8 +164,8 @@ export function Example() {
 
       {/* Navigation */}
       <div className="flex justify-center pt-4">
-        <Button variant="outline" render={<Link to="/" />} nativeButton={false}>
-          ← Back to Home
+        <Button variant="outline" asChild>
+          <Link to="/">← Back to Home</Link>
         </Button>
       </div>
     </div>
