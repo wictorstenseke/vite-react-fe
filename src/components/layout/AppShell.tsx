@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 
 import { ModeToggle } from "@/components/mode-toggle";
+import { ThemeSelector } from "@/components/theme-selector";
 
 interface AppShellProps {
   children: ReactNode;
@@ -45,7 +46,10 @@ export function AppShell({ children }: AppShellProps) {
               </Link>
             </nav>
           </div>
-          <ModeToggle />
+          <div className="flex items-center gap-2">
+            <ThemeSelector />
+            <ModeToggle />
+          </div>
         </div>
       </header>
 

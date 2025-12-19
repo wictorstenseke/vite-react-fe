@@ -5,7 +5,11 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 export const Route = createRootRoute({
   component: () => (
-    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+    <ThemeProvider
+      defaultTheme="default"
+      defaultMode="system"
+      storageKey="vite-ui-theme"
+    >
       <AppShell>
         <Outlet />
       </AppShell>
