@@ -162,14 +162,14 @@ export const QueryDemo = () => {
     <div className="flex flex-col space-y-8 py-8">
       {/* Page Header */}
       <div className="space-y-1 bg-muted/70 p-8 rounded-lg">
-        <h1 className="text-3xl font-bold tracking-tight">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight">
           TanStack Query Demo
         </h1>
-        <p className="text-muted-foreground">
+        <p className="text-xl text-muted-foreground">
           Explore powerful data fetching, caching, and state management patterns
           with TanStack Query v5.
         </p>
-        <p className="text-sm">
+        <p className="text-sm text-muted-foreground">
           This interactive demo demonstrates core features through a posts
           management interface where you can view, create, update, and delete
           posts. Experience automatic caching, optimistic updates, background
@@ -183,7 +183,9 @@ export const QueryDemo = () => {
         <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
           <div className="mb-4 space-y-2">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold">Posts List</h2>
+              <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
+                Posts List
+              </h2>
               <div className="flex gap-2">
                 <Button
                   onClick={() => refetch()}
@@ -257,7 +259,9 @@ export const QueryDemo = () => {
         {/* Post Detail / Actions */}
         <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
           <div className="mb-4 space-y-2">
-            <h2 className="text-xl font-semibold">Post Actions</h2>
+            <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
+              Post Actions
+            </h2>
             <p className="text-sm text-muted-foreground">
               When a post is selected, you can update it with optimistic UI
               updates (UI changes immediately), delete it from the cache, or
@@ -268,7 +272,9 @@ export const QueryDemo = () => {
           {isCreating && (
             <div className="space-y-4">
               <div className="rounded-md border border-primary bg-primary/10 p-4">
-                <h3 className="font-medium mb-2">Create New Post</h3>
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-2">
+                  Create New Post
+                </h3>
                 <p className="text-sm text-muted-foreground mb-4">
                   This will create a new post and automatically update the cache
                 </p>
@@ -319,7 +325,7 @@ export const QueryDemo = () => {
                     <div className="text-xs text-muted-foreground">
                       Post ID: {selectedPost.id}
                     </div>
-                    <h3 className="font-semibold">
+                    <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
                       {updatedPosts.has(selectedPost.id)
                         ? updatedPosts.get(selectedPost.id)!.title
                         : getMountainBikeTitle(selectedPost.id)}
@@ -332,9 +338,9 @@ export const QueryDemo = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <h3 className="text-sm font-medium text-muted-foreground">
+                    <h4 className="scroll-m-20 text-xl font-semibold tracking-tight text-muted-foreground">
                       Available Actions:
-                    </h3>
+                    </h4>
 
                     <Button
                       onClick={() => handleUpdatePost(selectedPost.id)}
@@ -395,26 +401,34 @@ export const QueryDemo = () => {
       {/* Features Grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
-          <h3 className="mb-1 text-sm font-semibold">Auto Caching</h3>
-          <p className="text-xs text-muted-foreground">
+          <h4 className="scroll-m-20 text-xl font-semibold tracking-tight mb-1">
+            Auto Caching
+          </h4>
+          <p className="text-sm text-muted-foreground">
             Data is cached automatically and shared across components
           </p>
         </div>
         <div className="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
-          <h3 className="mb-1 text-sm font-semibold">Optimistic Updates</h3>
-          <p className="text-xs text-muted-foreground">
+          <h4 className="scroll-m-20 text-xl font-semibold tracking-tight mb-1">
+            Optimistic Updates
+          </h4>
+          <p className="text-sm text-muted-foreground">
             UI updates immediately before server confirms
           </p>
         </div>
         <div className="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
-          <h3 className="mb-1 text-sm font-semibold">Auto Refetch</h3>
-          <p className="text-xs text-muted-foreground">
+          <h4 className="scroll-m-20 text-xl font-semibold tracking-tight mb-1">
+            Auto Refetch
+          </h4>
+          <p className="text-sm text-muted-foreground">
             Refetch on window focus and network reconnect
           </p>
         </div>
         <div className="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
-          <h3 className="mb-1 text-sm font-semibold">Devtools</h3>
-          <p className="text-xs text-muted-foreground">
+          <h4 className="scroll-m-20 text-xl font-semibold tracking-tight mb-1">
+            Devtools
+          </h4>
+          <p className="text-sm text-muted-foreground">
             Press floating icon to inspect cache state
           </p>
         </div>

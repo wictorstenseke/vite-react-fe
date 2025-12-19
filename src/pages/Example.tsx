@@ -73,8 +73,10 @@ export function Example() {
     <div className="flex flex-col space-y-8 py-8">
       {/* Page Header */}
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Example Page</h1>
-        <p className="text-muted-foreground">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight">
+          Example Page
+        </h1>
+        <p className="text-xl text-muted-foreground">
           This is an example page showing how components and layouts work
           together.
         </p>
@@ -84,7 +86,7 @@ export function Example() {
       <div className="grid gap-6 md:grid-cols-2">
         {/* Counter Card */}
         <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm flex flex-col justify-center">
-          <h2 className="mb-4 text-xl font-semibold text-center">
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-center first:mt-0">
             Interactive Counter
           </h2>
           <div className="flex flex-col items-center space-y-4">
@@ -111,7 +113,7 @@ export function Example() {
         <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
           <div className="flex flex-col gap-6 sm:flex-row sm:gap-8">
             <div className="flex-1 min-w-0">
-              <h3 className="mb-2 text-sm font-medium text-muted-foreground">
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-2">
                 Default Buttons
               </h3>
               <div className="flex flex-col space-y-2">
@@ -125,7 +127,7 @@ export function Example() {
             </div>
 
             <div className="flex-1 min-w-0">
-              <h3 className="mb-2 text-sm font-medium text-muted-foreground">
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-2">
                 Small Variants
               </h3>
               <div className="flex flex-col space-y-2">
@@ -153,8 +155,10 @@ export function Example() {
 
       {/* Additional Content */}
       <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
-        <h2 className="mb-4 text-xl font-semibold">Responsive Layout</h2>
-        <p className="text-muted-foreground">
+        <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0 mb-4">
+          Responsive Layout
+        </h2>
+        <p className="leading-7">
           This page uses a responsive grid layout that adapts to different
           screen sizes. On mobile, cards stack vertically. On tablet and
           desktop, they appear side by side. The AppShell provides consistent
