@@ -422,8 +422,8 @@ export const QueryDemo = () => {
 
       {/* Navigation */}
       <div className="flex justify-center">
-        <Button variant="outline" render={<Link to="/" />} nativeButton={false}>
-          ← Back to Home
+        <Button variant="outline" asChild>
+          <Link to="/">← Back to Home</Link>
         </Button>
       </div>
     </div>

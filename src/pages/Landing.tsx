@@ -16,34 +16,20 @@ export function Landing() {
           practices and ready to scale.
         </p>
         <div className="flex flex-col gap-4 sm:flex-row">
-          <Button
-            size="lg"
-            render={<Link to="/example" />}
-            nativeButton={false}
-          >
-            Get Started
+          <Button size="lg" asChild>
+            <Link to="/example">Get Started</Link>
           </Button>
-          <Button
-            size="lg"
-            variant="secondary"
-            render={<Link to="/query-demo" />}
-            nativeButton={false}
-          >
-            Query Demo
+          <Button size="lg" variant="secondary" asChild>
+            <Link to="/query-demo">Query Demo</Link>
           </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            render={
-              <a
-                href="https://github.com/wictorstenseke/vite-react-fe"
-                target="_blank"
-                rel="noopener noreferrer"
-              />
-            }
-            nativeButton={false}
-          >
-            View on GitHub
+          <Button size="lg" variant="outline" asChild>
+            <a
+              href="https://github.com/wictorstenseke/vite-react-fe"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View on GitHub
+            </a>
           </Button>
         </div>
       </div>
