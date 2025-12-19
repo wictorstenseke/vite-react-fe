@@ -2,6 +2,12 @@ import { Moon, Sun } from "lucide-react";
 
 import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export function ModeToggle() {
   const { mode, setMode } = useTheme();
@@ -34,10 +40,30 @@ export function ModeToggle() {
     );
   };
 
+  const getTooltipText = () => {
+    let isDark: boolean;
+    if (mode === "system") {
+      isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    } else {
+      isDark = mode === "dark";
+    }
+
+    return isDark ? "Switch to light mode" : "Switch to dark mode";
+  };
+
   return (
-    <Button variant="outline" size="icon" onClick={toggleMode}>
-      {getIcon()}
-      <span className="sr-only">Toggle light/dark mode</span>
-    </Button>
+    <TooltipProvider delayDuration={200}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button variant="outline" size="icon" onClick={toggleMode}>
+            {getIcon()}
+            <span className="sr-only">Toggle light/dark mode</span>
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="bottom">
+          <p>{getTooltipText()}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
