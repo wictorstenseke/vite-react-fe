@@ -33,13 +33,14 @@ export function ThemeProvider({
   storageKey = "vite-ui-theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<ThemeName>(
-    () =>
-      (localStorage.getItem(`${storageKey}-name`) as ThemeName) || defaultTheme
-  );
-  const [mode, setMode] = useState<Mode>(
-    () => (localStorage.getItem(`${storageKey}-mode`) as Mode) || defaultMode
-  );
+  const [theme, setTheme] = useState<ThemeName>(() => {
+    const stored = localStorage.getItem(`${storageKey}-name`);
+    return (stored as ThemeName) || defaultTheme;
+  });
+  const [mode, setMode] = useState<Mode>(() => {
+    const stored = localStorage.getItem(`${storageKey}-mode`);
+    return (stored as Mode) || defaultMode;
+  });
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -62,9 +63,21 @@ export function ThemeProvider({
     // Determine actual mode
     let actualMode: "light" | "dark";
     if (mode === "system") {
-      actualMode = window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      actualMode = mediaQuery.matches ? "dark" : "light";
+      
+      // Listen for system theme changes
+      const handleChange = (e: MediaQueryListEvent) => {
+        root.classList.remove("light", "dark");
+        root.classList.add(e.matches ? "dark" : "light");
+      };
+      
+      mediaQuery.addEventListener("change", handleChange);
+      
+      // Cleanup listener on unmount or when mode changes
+      return () => {
+        mediaQuery.removeEventListener("change", handleChange);
+      };
     } else {
       actualMode = mode;
     }

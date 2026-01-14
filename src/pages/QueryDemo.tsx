@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Link } from "@tanstack/react-router";
 
@@ -47,12 +47,32 @@ const getMountainBikeBody = (postId: number): string => {
   return mountainBikeBodies[(postId - 1) % mountainBikeBodies.length];
 };
 
+// Custom hook to manage alert state with auto-hide
+const useAutoHideAlert = (duration = 5000) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const show = useCallback(() => {
+    setIsVisible(true);
+  }, []);
+
+  useEffect(() => {
+    if (isVisible) {
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+      }, duration);
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible, duration]);
+
+  return { isVisible, show, hide: () => setIsVisible(false) };
+};
+
 export const QueryDemo = () => {
   const [page] = useState(1);
   const [selectedPostId, setSelectedPostId] = useState<number | null>(null);
   const [isCreating, setIsCreating] = useState(false);
-  const [showUpdateAlert, setShowUpdateAlert] = useState(false);
-  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+  const updateAlert = useAutoHideAlert();
+  const deleteAlert = useAutoHideAlert();
   const [deletedPostIds, setDeletedPostIds] = useState<Set<number>>(new Set());
   const [updatedPosts, setUpdatedPosts] = useState<
     Map<number, { title: string; body: string }>
@@ -80,6 +100,12 @@ export const QueryDemo = () => {
   const updatePostMutation = useUpdatePostMutation();
   const deletePostMutation = useDeletePostMutation();
 
+  // Memoize filtered posts to avoid recalculating on every render
+  const visiblePosts = useMemo(() => {
+    if (!posts) return [];
+    return posts.filter((post) => !deletedPostIds.has(post.id));
+  }, [posts, deletedPostIds]);
+
   const handleCreatePost = () => {
     createPostMutation.mutate(
       {
@@ -96,9 +122,9 @@ export const QueryDemo = () => {
     );
   };
 
-  const handleUpdatePost = (id: number) => {
-    setShowUpdateAlert(false);
-    setShowDeleteAlert(false);
+  const handleUpdatePost = useCallback((id: number) => {
+    updateAlert.hide();
+    deleteAlert.hide();
     const updatedData = {
       title: "Updated: Advanced Cornering Techniques",
       body: "Master cornering by looking ahead, weighting the outside pedal, and using body positioning to maximize traction and control through turns.",
@@ -110,20 +136,20 @@ export const QueryDemo = () => {
       },
       {
         onSuccess: () => {
-          setShowUpdateAlert(true);
+          updateAlert.show();
           // Track updated post data locally
           setUpdatedPosts((prev) => new Map(prev).set(id, updatedData));
         },
       }
     );
-  };
+  }, [updatePostMutation, updateAlert, deleteAlert]);
 
-  const handleDeletePost = (id: number) => {
-    setShowUpdateAlert(false);
-    setShowDeleteAlert(false);
+  const handleDeletePost = useCallback((id: number) => {
+    updateAlert.hide();
+    deleteAlert.hide();
     deletePostMutation.mutate(id, {
       onSuccess: () => {
-        setShowDeleteAlert(true);
+        deleteAlert.show();
         // Track deleted post ID
         setDeletedPostIds((prev) => new Set(prev).add(id));
         if (selectedPostId === id) {
@@ -131,32 +157,19 @@ export const QueryDemo = () => {
         }
       },
     });
-  };
+  }, [deletePostMutation, selectedPostId, updateAlert, deleteAlert]);
 
-  const handleSelectPost = (id: number) => {
-    setShowUpdateAlert(false);
-    setShowDeleteAlert(false);
+  const handleSelectPost = useCallback((id: number) => {
+    updateAlert.hide();
+    deleteAlert.hide();
     setSelectedPostId(id);
-  };
+  }, [updateAlert, deleteAlert]);
 
-  // Auto-hide alerts after 5 seconds
-  useEffect(() => {
-    if (showUpdateAlert) {
-      const timer = setTimeout(() => {
-        setShowUpdateAlert(false);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [showUpdateAlert]);
-
-  useEffect(() => {
-    if (showDeleteAlert) {
-      const timer = setTimeout(() => {
-        setShowDeleteAlert(false);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [showDeleteAlert]);
+  const handleClearSelection = useCallback(() => {
+    updateAlert.hide();
+    deleteAlert.hide();
+    setSelectedPostId(null);
+  }, [updateAlert, deleteAlert]);
 
   return (
     <div className="flex flex-col space-y-8 py-8">
@@ -226,10 +239,7 @@ export const QueryDemo = () => {
           {posts && (
             <ScrollArea className="h-96 rounded-md border">
               <div className="space-y-2 p-4">
-                {posts
-                  .slice(0, 10)
-                  .filter((post) => !deletedPostIds.has(post.id))
-                  .map((post) => (
+                {visiblePosts.map((post) => (
                     <button
                       key={post.id}
                       onClick={() => handleSelectPost(post.id)}
@@ -364,11 +374,7 @@ export const QueryDemo = () => {
                     </Button>
 
                     <Button
-                      onClick={() => {
-                        setShowUpdateAlert(false);
-                        setShowDeleteAlert(false);
-                        setSelectedPostId(null);
-                      }}
+                      onClick={handleClearSelection}
                       variant="outline"
                       className="w-full"
                     >
@@ -376,7 +382,7 @@ export const QueryDemo = () => {
                     </Button>
                   </div>
 
-                  {showUpdateAlert && (
+                  {updateAlert.isVisible && (
                     <div className="rounded-md border border-green-500 bg-green-500/10 p-3">
                       <p className="text-sm text-green-700 dark:text-green-400">
                         Post updated successfully with optimistic UI!
@@ -384,7 +390,7 @@ export const QueryDemo = () => {
                     </div>
                   )}
 
-                  {showDeleteAlert && (
+                  {deleteAlert.isVisible && (
                     <div className="rounded-md border border-green-500 bg-green-500/10 p-3">
                       <p className="text-sm text-green-700 dark:text-green-400">
                         Post deleted successfully!
