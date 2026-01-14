@@ -3,6 +3,9 @@ import { createContext, useContext, useEffect, useState } from "react";
 type ThemeName = "default" | "dark-matter" | "neo-brutalism";
 type Mode = "light" | "dark" | "system";
 
+const VALID_THEMES: ThemeName[] = ["default", "dark-matter", "neo-brutalism"];
+const VALID_MODES: Mode[] = ["light", "dark", "system"];
+
 type ThemeProviderProps = {
   children: React.ReactNode;
   defaultTheme?: ThemeName;
@@ -33,13 +36,14 @@ export function ThemeProvider({
   storageKey = "vite-ui-theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<ThemeName>(
-    () =>
-      (localStorage.getItem(`${storageKey}-name`) as ThemeName) || defaultTheme
-  );
-  const [mode, setMode] = useState<Mode>(
-    () => (localStorage.getItem(`${storageKey}-mode`) as Mode) || defaultMode
-  );
+  const [theme, setTheme] = useState<ThemeName>(() => {
+    const stored = localStorage.getItem(`${storageKey}-name`);
+    return VALID_THEMES.includes(stored as ThemeName) ? (stored as ThemeName) : defaultTheme;
+  });
+  const [mode, setMode] = useState<Mode>(() => {
+    const stored = localStorage.getItem(`${storageKey}-mode`);
+    return VALID_MODES.includes(stored as Mode) ? (stored as Mode) : defaultMode;
+  });
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -62,9 +66,21 @@ export function ThemeProvider({
     // Determine actual mode
     let actualMode: "light" | "dark";
     if (mode === "system") {
-      actualMode = window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      actualMode = mediaQuery.matches ? "dark" : "light";
+      
+      // Listen for system theme changes
+      const handleChange = (e: MediaQueryListEvent) => {
+        root.classList.remove("light", "dark");
+        root.classList.add(e.matches ? "dark" : "light");
+      };
+      
+      mediaQuery.addEventListener("change", handleChange);
+      
+      // Cleanup listener on unmount or when mode changes
+      return () => {
+        mediaQuery.removeEventListener("change", handleChange);
+      };
     } else {
       actualMode = mode;
     }

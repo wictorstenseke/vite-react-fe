@@ -232,21 +232,58 @@ All pages automatically use this layout via the root route.
 
 ## 🧪 Testing
 
-Tests are configured with Vitest. Create test files with `.test.tsx` or `.spec.tsx` extension:
+This project uses **Vitest** with **@testing-library/react** for comprehensive testing.
+
+### Running Tests
+
+```bash
+npm test              # Run all tests
+npm run test:watch    # Run tests in watch mode
+npm run test:coverage # Generate coverage report
+```
+
+### Test Files
+
+Create test files with `.test.tsx` or `.test.ts` extension, co-located with the code they test:
 
 ```tsx
-// Example.test.tsx
+// button.test.tsx
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { Example } from "./Example";
+import userEvent from "@testing-library/user-event";
 
-describe("Example", () => {
-  it("renders correctly", () => {
-    render(<Example />);
-    expect(screen.getByText("Example Page")).toBeInTheDocument();
+import { Button } from "./button";
+
+describe("Button", () => {
+  it("handles click events", async () => {
+    const handleClick = vi.fn();
+    const user = userEvent.setup();
+    
+    render(<Button onClick={handleClick}>Click me</Button>);
+    await user.click(screen.getByRole("button"));
+    
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 });
 ```
+
+### Testing with React Query
+
+For components using TanStack Query, use the provided test utilities:
+
+```tsx
+import { renderWithQueryClient } from "@/test/utils";
+
+it("fetches and displays data", async () => {
+  renderWithQueryClient(<MyComponent />);
+  
+  await waitFor(() => {
+    expect(screen.getByText("Data loaded")).toBeInTheDocument();
+  });
+});
+```
+
+📚 **[Complete Testing Guide](./docs/testing.md)** - Detailed testing strategies, patterns, and best practices
 
 ## 🔧 VS Code Setup
 
