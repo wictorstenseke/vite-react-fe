@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
@@ -52,18 +51,16 @@ export function ModeToggle() {
   };
 
   return (
-    <TooltipProvider delayDuration={200}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button variant="outline" size="icon" onClick={toggleMode}>
-            {getIcon()}
-            <span className="sr-only">Toggle light/dark mode</span>
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent side="bottom">
-          <p>{getTooltipText()}</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button variant="outline" size="icon" onClick={toggleMode}>
+          {getIcon()}
+          <span className="sr-only">Toggle light/dark mode</span>
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent side="bottom">
+        <p>{getTooltipText()}</p>
+      </TooltipContent>
+    </Tooltip>
   );
 }
