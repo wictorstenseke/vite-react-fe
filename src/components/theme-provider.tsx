@@ -3,6 +3,9 @@ import { createContext, useContext, useEffect, useState } from "react";
 type ThemeName = "default" | "dark-matter" | "neo-brutalism";
 type Mode = "light" | "dark" | "system";
 
+const VALID_THEMES: ThemeName[] = ["default", "dark-matter", "neo-brutalism"];
+const VALID_MODES: Mode[] = ["light", "dark", "system"];
+
 type ThemeProviderProps = {
   children: React.ReactNode;
   defaultTheme?: ThemeName;
@@ -35,11 +38,11 @@ export function ThemeProvider({
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<ThemeName>(() => {
     const stored = localStorage.getItem(`${storageKey}-name`);
-    return (stored as ThemeName) || defaultTheme;
+    return VALID_THEMES.includes(stored as ThemeName) ? (stored as ThemeName) : defaultTheme;
   });
   const [mode, setMode] = useState<Mode>(() => {
     const stored = localStorage.getItem(`${storageKey}-mode`);
-    return (stored as Mode) || defaultMode;
+    return VALID_MODES.includes(stored as Mode) ? (stored as Mode) : defaultMode;
   });
 
   useEffect(() => {

@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { memo } from "react";
 
 import { Link } from "@tanstack/react-router";
 
@@ -9,37 +8,6 @@ import { ThemeSelector } from "@/components/theme-selector";
 interface AppShellProps {
   children: ReactNode;
 }
-
-// Memoize navigation links to prevent unnecessary re-renders
-const Navigation = memo(() => (
-  <nav className="flex items-center space-x-6 text-sm font-medium">
-    <Link
-      to="/"
-      className="transition-colors hover:text-foreground/80"
-      activeProps={{ className: "text-foreground" }}
-      inactiveProps={{ className: "text-foreground/60" }}
-    >
-      Home
-    </Link>
-    <Link
-      to="/example"
-      className="transition-colors hover:text-foreground/80"
-      activeProps={{ className: "text-foreground" }}
-      inactiveProps={{ className: "text-foreground/60" }}
-    >
-      Example
-    </Link>
-    <Link
-      to="/query-demo"
-      className="transition-colors hover:text-foreground/80"
-      activeProps={{ className: "text-foreground" }}
-      inactiveProps={{ className: "text-foreground/60" }}
-    >
-      Query Demo
-    </Link>
-  </nav>
-));
-Navigation.displayName = "Navigation";
 
 export function AppShell({ children }: AppShellProps) {
   return (
@@ -51,7 +19,32 @@ export function AppShell({ children }: AppShellProps) {
             <Link to="/" className="mr-6 flex items-center space-x-2">
               <span className="font-bold">My App</span>
             </Link>
-            <Navigation />
+            <nav className="flex items-center space-x-6 text-sm font-medium">
+              <Link
+                to="/"
+                className="transition-colors hover:text-foreground/80"
+                activeProps={{ className: "text-foreground" }}
+                inactiveProps={{ className: "text-foreground/60" }}
+              >
+                Home
+              </Link>
+              <Link
+                to="/example"
+                className="transition-colors hover:text-foreground/80"
+                activeProps={{ className: "text-foreground" }}
+                inactiveProps={{ className: "text-foreground/60" }}
+              >
+                Example
+              </Link>
+              <Link
+                to="/query-demo"
+                className="transition-colors hover:text-foreground/80"
+                activeProps={{ className: "text-foreground" }}
+                inactiveProps={{ className: "text-foreground/60" }}
+              >
+                Query Demo
+              </Link>
+            </nav>
           </div>
           <div className="flex items-center gap-2">
             <ThemeSelector />

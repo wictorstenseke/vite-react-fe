@@ -55,6 +55,10 @@ const useAutoHideAlert = (duration = 5000) => {
     setIsVisible(true);
   }, []);
 
+  const hide = useCallback(() => {
+    setIsVisible(false);
+  }, []);
+
   useEffect(() => {
     if (isVisible) {
       const timer = setTimeout(() => {
@@ -64,7 +68,7 @@ const useAutoHideAlert = (duration = 5000) => {
     }
   }, [isVisible, duration]);
 
-  return { isVisible, show, hide: () => setIsVisible(false) };
+  return { isVisible, show, hide };
 };
 
 export const QueryDemo = () => {
