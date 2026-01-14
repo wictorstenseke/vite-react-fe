@@ -1,6 +1,8 @@
+import { type ReactElement, type ReactNode } from "react";
+
+import { type RenderOptions, render } from "@testing-library/react";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { RenderOptions, render } from "@testing-library/react";
-import { ReactElement, ReactNode } from "react";
 
 /**
  * Create a new QueryClient for testing with specific defaults
@@ -16,11 +18,6 @@ export function createTestQueryClient() {
       mutations: {
         retry: false,
       },
-    },
-    logger: {
-      log: () => {},
-      warn: () => {},
-      error: () => {},
     },
   });
 }

@@ -1,9 +1,12 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHook, waitFor } from "@testing-library/react";
+import { type ReactNode } from "react";
 
-import { createTestQueryClient } from "@/test/utils";
+import { renderHook, waitFor } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+
 import { QueryClientProvider } from "@tanstack/react-query";
-import { ReactNode } from "react";
+
+import { postsApi } from "@/lib/api";
+import { createTestQueryClient } from "@/test/utils";
 
 import {
   usePostsQuery,
@@ -13,7 +16,7 @@ import {
   useDeletePostMutation,
   postKeys,
 } from "./usePosts";
-import { postsApi } from "@/lib/api";
+
 
 // Mock the API module
 vi.mock("@/lib/api", () => ({
