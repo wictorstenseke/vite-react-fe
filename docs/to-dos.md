@@ -23,10 +23,18 @@
 
 ## 🧪 Testing
 
-- [ ] Add unit tests for utility functions
-- [ ] Add component tests for UI components
+- [x] Add unit tests for utility functions
+- [x] Add component tests for UI components
+- [x] Set up testing infrastructure (Vitest + Testing Library)
+- [x] Create test utilities for React Query
+- [x] Add example tests for Button component
+- [x] Add example tests for usePosts hooks
+- [x] Add example tests for Example page component
+- [x] Document testing strategies and best practices
 - [ ] Add integration tests for routing
 - [ ] Set up E2E testing with Playwright
+- [ ] Add visual regression testing
+- [ ] Add accessibility testing with axe-core
 
 ## 📚 Documentation
 
