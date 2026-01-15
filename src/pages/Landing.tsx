@@ -90,6 +90,33 @@ export function Landing() {
               deployment.
             </p>
           </div>
+          <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+              ESLint & Prettier
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Code quality tools pre-configured to maintain consistent style and
+              catch errors early.
+            </p>
+          </div>
+          <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+              React 19
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Built with the latest React version featuring improved performance
+              and new APIs.
+            </p>
+          </div>
+          <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+              Developer Experience
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Optimized setup with hot reload, type checking, and modern tooling
+              for productive development.
+            </p>
+          </div>
         </div>
       </div>
     </div>
