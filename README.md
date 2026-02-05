@@ -138,9 +138,10 @@ function AboutPage() {
 2. The route tree is auto-generated:
    - TanStack Router Vite plugin watches `src/routes/` for changes
    - Generates `src/routeTree.gen.ts` automatically (git-ignored)
+   - **Automatic on install**: The `prepare` script ensures route tree is generated when you run `npm install` or `npm ci`
    - No manual registration needed - just create route files and they work!
 
-**Note:** You don't need to manually run `generate:routes` - it happens automatically during development and before type-checking.
+**Note:** You don't need to manually run `generate:routes` - it happens automatically during development, before type-checking, and after installing dependencies.
 
 ## 🔄 Data Fetching with TanStack Query
 
@@ -308,6 +309,18 @@ GitHub Actions workflow is included (`.github/workflows/ci.yml`):
 - Linting
 - Testing
 - Building
+
+## 🔧 Troubleshooting
+
+### Route Tree Not Found Error
+
+If you see an error like `Cannot find module './routeTree.gen'`, the route tree file wasn't generated. This is fixed automatically by:
+
+1. **Fresh install**: Run `npm install` or `npm ci` - the `prepare` script will generate it
+2. **Manual generation**: Run `npm run generate:routes`
+3. **Build time**: Route tree is generated automatically before each build
+
+The route tree file (`src/routeTree.gen.ts`) is git-ignored, so it's always generated fresh in each environment.
 
 ## 📚 Learn More
 
