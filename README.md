@@ -60,6 +60,18 @@ npm install
 npm run dev
 ```
 
+### Configure API base URL (optional)
+
+By default the demo client points to JSONPlaceholder:
+
+- `https://jsonplaceholder.typicode.com`
+
+To override it, set `VITE_API_BASE_URL` in your environment:
+
+```bash
+VITE_API_BASE_URL="https://api.example.com"
+```
+
 ### Build for production
 
 ```bash

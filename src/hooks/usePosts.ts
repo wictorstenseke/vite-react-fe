@@ -69,13 +69,19 @@ export const useUpdatePostMutation = () => {
     mutationFn: ({ id, data }: { id: number; data: UpdatePostInput }) =>
       postsApi.updatePost(id, data),
     onMutate: async ({ id, data }) => {
-      // Cancel outgoing refetches
-      await queryClient.cancelQueries({ queryKey: postKeys.detail(id) });
+      // Cancel outgoing refetches so optimistic updates are not overwritten.
+      await Promise.all([
+        queryClient.cancelQueries({ queryKey: postKeys.detail(id) }),
+        queryClient.cancelQueries({ queryKey: postKeys.lists() }),
+      ]);
 
-      // Snapshot previous value
+      // Snapshot previous detail and list values for rollback.
       const previousPost = queryClient.getQueryData<Post>(postKeys.detail(id));
+      const previousLists = queryClient.getQueriesData<Post[]>({
+        queryKey: postKeys.lists(),
+      });
 
-      // Optimistically update
+      // Optimistically update detail cache.
       if (previousPost) {
         queryClient.setQueryData<Post>(postKeys.detail(id), {
           ...previousPost,
@@ -83,17 +89,47 @@ export const useUpdatePostMutation = () => {
         });
       }
 
-      return { previousPost };
+      // Optimistically update all list caches that contain the post.
+      previousLists.forEach(([queryKey, posts]) => {
+        if (!posts) {
+          return;
+        }
+
+        queryClient.setQueryData<Post[]>(
+          queryKey,
+          posts.map((post) =>
+            post.id === id
+              ? {
+                  ...post,
+                  ...data,
+                }
+              : post
+          )
+        );
+      });
+
+      return { previousPost, previousLists };
     },
     onError: (_error, { id }, context) => {
-      // Rollback on error
+      // Rollback detail cache on error.
       if (context?.previousPost) {
         queryClient.setQueryData(postKeys.detail(id), context.previousPost);
       }
+
+      // Rollback list caches on error.
+      context?.previousLists.forEach(([queryKey, posts]) => {
+        if (typeof posts === "undefined") {
+          queryClient.removeQueries({ queryKey, exact: true });
+          return;
+        }
+
+        queryClient.setQueryData(queryKey, posts);
+      });
     },
     onSettled: (_data, _error, { id }) => {
-      // Refetch after mutation
+      // Refetch relevant queries after mutation settles.
       queryClient.invalidateQueries({ queryKey: postKeys.detail(id) });
+      queryClient.invalidateQueries({ queryKey: postKeys.lists() });
     },
   });
 };

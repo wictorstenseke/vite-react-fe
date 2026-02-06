@@ -17,6 +17,7 @@ import {
   postKeys,
 } from "./usePosts";
 
+import type { Post } from "@/types/api";
 
 // Mock the API module
 vi.mock("@/lib/api", () => ({
@@ -126,7 +127,7 @@ describe("usePosts hooks", () => {
   });
 
   describe("useUpdatePostMutation", () => {
-    it("updates a post with optimistic update", async () => {
+    it("updates detail and list caches optimistically and invalidates on settle", async () => {
       const existingPost = {
         id: 1,
         title: "Original",
@@ -140,8 +141,17 @@ describe("usePosts hooks", () => {
         userId: 1,
       };
 
-      // Pre-populate cache with existing post
+      const paginatedListKey = postKeys.list({ page: 1, limit: 10 });
+      const previousList = [
+        existingPost,
+        { id: 2, title: "Second", body: "Second body", userId: 2 },
+      ];
+
+      const invalidateQueriesSpy = vi.spyOn(queryClient, "invalidateQueries");
+
+      // Pre-populate caches with existing post.
       queryClient.setQueryData(postKeys.detail(1), existingPost);
+      queryClient.setQueryData(paginatedListKey, previousList);
 
       vi.mocked(postsApi.updatePost).mockResolvedValue(updatedPost);
 
@@ -152,8 +162,64 @@ describe("usePosts hooks", () => {
       const updateData = { title: "Updated", body: "Updated body" };
       result.current.mutate({ id: 1, data: updateData });
 
+      await waitFor(() => {
+        const optimisticallyUpdatedDetail = queryClient.getQueryData<Post>(
+          postKeys.detail(1)
+        );
+        const optimisticallyUpdatedList = queryClient.getQueryData<Post[]>(
+          paginatedListKey
+        );
+
+        expect(optimisticallyUpdatedDetail).toMatchObject(updateData);
+        expect(optimisticallyUpdatedList?.[0]).toMatchObject(updateData);
+      });
+
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(postsApi.updatePost).toHaveBeenCalledWith(1, updateData);
+
+      expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+        queryKey: postKeys.detail(1),
+      });
+      expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+        queryKey: postKeys.lists(),
+      });
+    });
+
+    it("rolls back detail and list caches on mutation error", async () => {
+      const existingPost = {
+        id: 1,
+        title: "Original",
+        body: "Original body",
+        userId: 1,
+      };
+
+      const paginatedListKey = postKeys.list({ page: 1, limit: 10 });
+      const previousList = [
+        existingPost,
+        { id: 2, title: "Second", body: "Second body", userId: 2 },
+      ];
+
+      queryClient.setQueryData(postKeys.detail(1), existingPost);
+      queryClient.setQueryData(paginatedListKey, previousList);
+
+      vi.mocked(postsApi.updatePost).mockRejectedValue(new Error("Update failed"));
+
+      const { result } = renderHook(() => useUpdatePostMutation(), {
+        wrapper: createWrapper(),
+      });
+
+      result.current.mutate({
+        id: 1,
+        data: { title: "Updated", body: "Updated body" },
+      });
+
+      await waitFor(() => expect(result.current.isError).toBe(true));
+
+      const rolledBackDetail = queryClient.getQueryData<Post>(postKeys.detail(1));
+      const rolledBackList = queryClient.getQueryData<Post[]>(paginatedListKey);
+
+      expect(rolledBackDetail).toEqual(existingPost);
+      expect(rolledBackList).toEqual(previousList);
     });
   });
 

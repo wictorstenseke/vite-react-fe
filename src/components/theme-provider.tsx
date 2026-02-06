@@ -1,6 +1,14 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
-type Mode = "light" | "dark" | "system";
+export type Mode = "light" | "dark" | "system";
+export type ResolvedMode = "light" | "dark";
 
 const VALID_MODES: Mode[] = ["light", "dark", "system"];
 
@@ -12,15 +20,35 @@ type ThemeProviderProps = {
 
 type ThemeProviderState = {
   mode: Mode;
+  resolvedMode: ResolvedMode;
   setMode: (mode: Mode) => void;
 };
 
-const initialState: ThemeProviderState = {
-  mode: "system",
-  setMode: () => null,
+const ThemeProviderContext = createContext<ThemeProviderState | undefined>(
+  undefined
+);
+
+const getSystemMode = (): ResolvedMode => {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return "light";
+  }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
 };
 
-const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
+const getStoredMode = (storageKey: string, defaultMode: Mode): Mode => {
+  if (typeof window === "undefined") {
+    return defaultMode;
+  }
+
+  const storedMode = window.localStorage.getItem(`${storageKey}-mode`);
+
+  return VALID_MODES.includes(storedMode as Mode)
+    ? (storedMode as Mode)
+    : defaultMode;
+};
 
 export function ThemeProvider({
   children,
@@ -28,52 +56,60 @@ export function ThemeProvider({
   storageKey = "vite-ui-theme",
   ...props
 }: ThemeProviderProps) {
-  const [mode, setMode] = useState<Mode>(() => {
-    const stored = localStorage.getItem(`${storageKey}-mode`);
-    return VALID_MODES.includes(stored as Mode)
-      ? (stored as Mode)
-      : defaultMode;
-  });
+  const [mode, setCurrentMode] = useState<Mode>(() =>
+    getStoredMode(storageKey, defaultMode)
+  );
+  const [systemMode, setSystemMode] = useState<ResolvedMode>(() =>
+    getSystemMode()
+  );
+
+  const resolvedMode = mode === "system" ? systemMode : mode;
 
   useEffect(() => {
-    const root = window.document.documentElement;
-
-    // Remove all mode classes
-    root.classList.remove("light", "dark");
-
-    // Determine actual mode
-    let actualMode: "light" | "dark";
-    if (mode === "system") {
-      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-      actualMode = mediaQuery.matches ? "dark" : "light";
-
-      // Listen for system theme changes
-      const handleChange = (e: MediaQueryListEvent) => {
-        root.classList.remove("light", "dark");
-        root.classList.add(e.matches ? "dark" : "light");
-      };
-
-      mediaQuery.addEventListener("change", handleChange);
-
-      // Cleanup listener on unmount or when mode changes
-      return () => {
-        mediaQuery.removeEventListener("change", handleChange);
-      };
-    } else {
-      actualMode = mode;
+    if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+      return undefined;
     }
 
-    // Apply mode class
-    root.classList.add(actualMode);
-  }, [mode]);
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleModeChange = (event: MediaQueryListEvent) => {
+      setSystemMode(event.matches ? "dark" : "light");
+    };
 
-  const value = {
-    mode,
-    setMode: (newMode: Mode) => {
-      localStorage.setItem(`${storageKey}-mode`, newMode);
-      setMode(newMode);
+    mediaQuery.addEventListener("change", handleModeChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleModeChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const root = window.document.documentElement;
+    root.classList.remove("light", "dark");
+    root.classList.add(resolvedMode);
+  }, [resolvedMode]);
+
+  const setMode = useCallback(
+    (newMode: Mode) => {
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(`${storageKey}-mode`, newMode);
+      }
+      setCurrentMode(newMode);
     },
-  };
+    [storageKey]
+  );
+
+  const value = useMemo<ThemeProviderState>(
+    () => ({
+      mode,
+      resolvedMode,
+      setMode,
+    }),
+    [mode, resolvedMode, setMode]
+  );
 
   return (
     <ThemeProviderContext.Provider {...props} value={value}>
@@ -83,11 +119,12 @@ export function ThemeProvider({
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const useTheme = () => {
+export const useTheme = (): ThemeProviderState => {
   const context = useContext(ThemeProviderContext);
 
-  if (context === undefined)
+  if (!context) {
     throw new Error("useTheme must be used within a ThemeProvider");
+  }
 
   return context;
 };
