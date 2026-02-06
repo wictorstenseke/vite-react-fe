@@ -18,6 +18,7 @@ You must always:
    - Read `.cursor/rules/*.mdc` files before doing anything else
    - Rule files in this project:
      - `.cursor/rules/global.mdc` (always applied)
+     - `.cursor/rules/api-client.mdc`
      - `.cursor/rules/react-components.mdc`
      - `.cursor/rules/tanstack-query.mdc`
      - `.cursor/rules/tanstack-router.mdc`

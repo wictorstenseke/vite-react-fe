@@ -9,7 +9,9 @@ globs:
 
 ## File Organization
 
-- Co-locate test files with source (e.g., `utils.test.ts` next to `utils.ts`)
+- Co-locate unit tests with source (e.g., `utils.test.ts` next to `utils.ts`)
+- Place cross-cutting integration tests in `src/test/` when co-location adds noise (e.g., router/provider resilience tests)
+- Keep shared test helpers in `src/test/utils.tsx` and test setup in `src/test/setup.ts`
 - Import test utilities from `vitest` directly
 
 ## Test Structure

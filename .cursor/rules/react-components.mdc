@@ -18,7 +18,8 @@ globs:
 ## Accessibility
 
 - Include accessibility attributes: ARIA labels, keyboard handlers, semantic HTML
-- Interactive elements must have `onClick` and `onKeyDown` handlers
+- Prefer semantic interactive elements (`button`, `a`, form controls) over clickable `div`/`span`
+- Non-semantic interactive elements must include `onClick`, `onKeyDown`, `role`, and `tabIndex`
 
 ## Styling
 
