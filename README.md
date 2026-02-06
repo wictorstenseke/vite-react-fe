@@ -7,7 +7,7 @@ A modern, production-ready React boilerplate with best practices built in.
 - ⚡️ **Vite (Rolldown)** - Lightning fast build tool powered by Rust-based Rolldown bundler
 - ⚛️ **React 19** - Latest React with TypeScript
 - 🎨 **Tailwind CSS v4** - Utility-first CSS framework
-- 🧩 **shadcn/ui** - Beautiful, accessible components built on Base UI primitives
+- 🧩 **shadcn/ui** - Beautiful, accessible components built on Radix UI primitives
 - 🛣️ **TanStack Router** - Type-safe file-based routing with auto-generated route tree
 - 🔄 **TanStack Query** - Powerful data fetching and caching
 - ✅ **Vitest** - Fast unit testing with coverage
@@ -29,14 +29,10 @@ src/
 │   │   └── AppShell.tsx      # Main layout wrapper
 │   └── ui/                    # shadcn/ui components
 ├── pages/
-│   ├── Landing.tsx            # Home page
-│   ├── Example.tsx            # Example page
-│   └── QueryDemo.tsx          # TanStack Query demo
+│   └── Landing.tsx            # Single landing page
 ├── routes/                    # TanStack Router routes
 │   ├── __root.tsx             # Root layout
-│   ├── index.tsx              # / route
-│   ├── example.tsx            # /example route
-│   └── query-demo.tsx         # /query-demo route
+│   └── index.tsx              # / route
 ├── hooks/
 │   └── usePosts.ts            # Example query hooks
 ├── lib/
@@ -217,19 +213,20 @@ React Query Devtools are included in development mode. Click the floating icon t
 - Manually trigger refetches
 - Debug query configurations
 
-Visit `/query-demo` to see a complete working example with queries, mutations, and cache management.
+The included query hook examples in `src/hooks/usePosts.ts` are ready to adapt
+to your own API resources.
 
 ## 🎯 Layout System
 
 The `AppShell` component provides:
 
-- Sticky header with navigation
+- Sticky header with theme toggle
 - Responsive container (max-width + padding)
-- Consistent spacing across pages
+- Consistent spacing across the app
 - Mobile-first responsive design
 - Footer
 
-All pages automatically use this layout via the root route.
+The landing page uses this layout via the root route.
 
 ## 🧪 Testing
 

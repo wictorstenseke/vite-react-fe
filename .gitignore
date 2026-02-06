@@ -27,3 +27,6 @@ dist-ssr
 # TanStack Router
 routeTree.gen.ts
 .tanstack
+
+# Codex local workspace metadata
+.codex/
