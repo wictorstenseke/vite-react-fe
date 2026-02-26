@@ -15,7 +15,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "ci": "npm run type-check && npm run lint && npm run test",
+    "ci": "npm audit --audit-level=high && npm run type-check && npm run lint && npm run test",
     "check": "npm run ci",
     "check:full": "npm run type-check && npm run lint && npm run test && vite build",
     "format": "prettier . --write",
