@@ -41,8 +41,7 @@ Search and replace these strings throughout the repository:
 ### 4. Application code
 
 - [ ] Replace or remove `src/pages/Landing.tsx` with your actual landing page
-- [ ] Remove the example `src/hooks/usePosts.ts` and `src/hooks/usePosts.test.tsx` files once you have real API resources
-- [ ] Update `src/lib/api.ts` with your actual API base URL and resource clients
+- [ ] Add your own API client in `src/lib/` and register it with TanStack Query hooks in `src/hooks/`
 - [ ] Remove example route files in `src/routes/` that are not part of your application
 
 ### 5. CI/CD
@@ -75,7 +74,6 @@ Remove or replace everything flagged by those searches before shipping to produc
 
 The following are not boilerplate — they are reusable infrastructure you should keep:
 
-- `src/lib/api.ts` (fetch wrapper pattern)
 - `src/lib/queryClient.ts` (TanStack Query config)
 - `src/lib/utils.ts` (`cn` utility)
 - `src/test/utils.tsx` (test helpers)

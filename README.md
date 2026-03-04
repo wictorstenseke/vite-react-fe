@@ -66,8 +66,7 @@ This section is for template guidance only. Delete it when you have adapted the 
 
 3. **Replace placeholder application code:**
    - `src/pages/Landing.tsx` → your real landing page
-   - `src/hooks/usePosts.ts` → hooks for your own API resources
-   - `src/lib/api.ts` → point to your real API
+   - Add your own API client in `src/lib/` and hooks in `src/hooks/`
 
 4. **Review the docs:**
    - Fill in `docs/30-workflows.md` with your deployment details

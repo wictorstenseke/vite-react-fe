@@ -1,8 +1,7 @@
 ---
 description: API client conventions for fetch wrappers, error normalization, and response validation
 globs:
-  - src/lib/api.ts
-  - src/lib/**/*.test.ts
+  - src/lib/**/*.ts
 ---
 
 # API Client Conventions

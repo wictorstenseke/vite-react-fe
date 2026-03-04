@@ -31,13 +31,10 @@ src/
 │   ├── __root.tsx            # Root layout route
 │   └── index.tsx             # / route
 ├── hooks/
-│   └── usePosts.ts           # Example TanStack Query hooks
 ├── lib/
-│   ├── api.ts                # Fetch wrapper and API client
 │   ├── queryClient.ts        # TanStack Query global configuration
 │   └── utils.ts              # Utility functions (cn, etc.)
 ├── types/
-│   └── api.ts                # Shared API type definitions
 ├── test/
 │   ├── setup.ts              # Global test setup (jest-dom matchers)
 │   └── utils.tsx             # Test utilities (renderWithQueryClient)
@@ -79,15 +76,7 @@ TanStack Query is configured in `src/lib/queryClient.ts` with sensible defaults:
 | `refetchOnWindowFocus` | `true` | Keeps data fresh when user returns to the tab |
 | `refetchOnReconnect` | `true` | Refetches after network reconnection |
 
-Custom query hooks live in `src/hooks/` and follow the pattern in `usePosts.ts`.
-
-## API client
-
-`src/lib/api.ts` provides a typed `fetchJson` wrapper that:
-
-- Prepends `VITE_API_BASE_URL` to all relative paths
-- Throws on non-2xx responses with a structured error
-- Is importable as typed resource clients (e.g., `postsApi`)
+Custom query hooks live in `src/hooks/` and follow a `use[Entity]Query` / `use[Entity]Mutation` naming convention.
 
 ## Layout system
 

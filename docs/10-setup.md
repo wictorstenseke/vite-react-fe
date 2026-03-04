@@ -28,7 +28,7 @@ The app is available at `http://localhost:5173` by default.
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `VITE_API_BASE_URL` | `https://jsonplaceholder.typicode.com` | Base URL for the API client |
+| `VITE_API_BASE_URL` | `https://api.example.com` | Base URL for your API client (set in `src/lib/`) |
 | `BASE_PATH` | `/` | Base path for asset/route resolution (needed for subdirectory deploys) |
 
 Create a `.env.local` file in the project root to override defaults locally:
