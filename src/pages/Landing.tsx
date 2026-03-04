@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 
-export function Landing() {
-  const stackBenefits = [
+const stackBenefits = [
     {
       title: "Vite + Rolldown",
       description:
@@ -47,8 +46,9 @@ export function Landing() {
       description:
         "Automated type-check, lint, test, and build validation on every push or pull request.",
     },
-  ] as const;
+] as const;
 
+export function Landing() {
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 py-12 md:py-20">
       <section className="rounded-2xl border bg-gradient-to-b from-muted/60 to-background p-8 text-center shadow-sm md:p-12">

@@ -36,10 +36,6 @@ export const RootErrorComponent = ({
   error: Error;
   reset: () => void;
 }) => {
-  const handleRetry = () => {
-    reset();
-  };
-
   return (
     <RootContainer>
       <section className="mx-auto flex w-full max-w-2xl flex-col gap-5 rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
@@ -55,7 +51,7 @@ export const RootErrorComponent = ({
           {error.message}
         </pre>
         <div className="flex flex-wrap gap-3">
-          <Button onClick={handleRetry}>Try again</Button>
+          <Button onClick={reset}>Try again</Button>
           <Button variant="outline" asChild>
             <Link to="/">Go to home</Link>
           </Button>

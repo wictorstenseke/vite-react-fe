@@ -54,7 +54,6 @@ export function ThemeProvider({
   children,
   defaultMode = "system",
   storageKey = "vite-ui-theme",
-  ...props
 }: ThemeProviderProps) {
   const [mode, setCurrentMode] = useState<Mode>(() =>
     getStoredMode(storageKey, defaultMode)
@@ -112,7 +111,7 @@ export function ThemeProvider({
   );
 
   return (
-    <ThemeProviderContext.Provider {...props} value={value}>
+    <ThemeProviderContext.Provider value={value}>
       {children}
     </ThemeProviderContext.Provider>
   );
